@@ -3,7 +3,7 @@
 ## Mediu
 - **OS:** Ubuntu 24.04.4 LTS (Mate) — user `vboxuser`
 - **VirtualBox Guest Additions:** 7.1.6
-- **SSH:** Cursor remote
+- **SSH:** acces remote la VM
 - **Notion (Python):** https://www.notion.so/Configurarea-mediului-de-dezvoltare-Python-Linux-1c96a07fc8488002aaf6fd96766733e0
 - **Materiale curs:** `~/Documents/TWAAOS/Notes/`
   - Lab #02: `Notes/TWAAOS-RCC,SC lab #02.md`
@@ -25,9 +25,8 @@
 | `lab07-deploy/` | Lab 7 — final: About + UI consistent + deploy Render | ✓ curent |
 
 ## IDE
-- **Cursor** — remote SSH (agent).
-- **VS Code** — editor local pe Mate (pachet `code` 1.121.0, repo Microsoft). Lansare: meniu Mate → **Visual Studio Code**, sau din terminal local (fără sesiune Cursor SSH): `env -u VSCODE_IPC_HOOK_CLI code .` — în sesiunea Cursor remote, `code` din PATH poate indica CLI-ul Cursor, nu VS Code de pe desktop.
-- **Windsurf** — neinstalat (nu e necesar).
+- **VS Code** — editor pe Mate (`code` din meniu sau terminal).
+- **DBeaver** / **sqlitebrowser** — vizualizare baze de date.
 
 ## Lab #01 — mediu Linux (21.05.2026) ✓
 

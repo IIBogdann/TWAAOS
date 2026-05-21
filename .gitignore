@@ -2,6 +2,7 @@
 .env
 .env.local
 *.pem
+Notes/1.txt
 
 # Python
 __pycache__/
@@ -27,3 +28,8 @@ build/
 # OS
 .DS_Store
 Thumbs.db
+
+# Lab 6 — generate local, not for repo
+lab06-gemini/archives/
+lab06-gemini/rapoarte/
+Notes/*.zip
