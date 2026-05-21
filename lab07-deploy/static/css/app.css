@@ -403,20 +403,9 @@ main.app-main {
 
 .app-footer-inner {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    gap: 1rem;
     padding: 0.85rem 0;
-}
-
-.footer-copy {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--app-muted);
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
 }
 
 .btn-footer-about {
