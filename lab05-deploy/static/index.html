@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionar de sarcini</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-primary">
+    <div class="container">
+        <span class="navbar-brand fw-bold">Gestionar de sarcini</span>
+        <div class="d-flex align-items-center gap-3">
+            <span id="task-counter" class="text-white small d-none"></span>
+            <div id="user-info" class="d-none align-items-center gap-3">
+                <span id="user-email" class="text-white small"></span>
+                <button class="btn btn-outline-light btn-sm" onclick="logout()">Deconectare</button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+
+    <div id="auth-section">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+
+                <div id="register-form" class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Înregistrare</h5>
+                        <div id="register-error" class="alert alert-danger d-none"></div>
+                        <div id="register-success" class="alert alert-success d-none"></div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" id="register-email" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Parolă (min. 8 caractere)</label>
+                            <input type="password" id="register-password" class="form-control">
+                        </div>
+                        <button class="btn btn-primary w-100" onclick="registerUser()">Înregistrează-te</button>
+                        <p class="text-center mt-3 mb-0">
+                            Ai deja cont? <a href="#" onclick="toggleAuthForm(); return false;">Autentifică-te</a>
+                        </p>
+                    </div>
+                </div>
+
+                <div id="login-form" class="card d-none">
+                    <div class="card-body">
+                        <h5 class="card-title">Autentificare</h5>
+                        <div id="login-error" class="alert alert-danger d-none"></div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" id="login-email" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Parolă</label>
+                            <input type="password" id="login-password" class="form-control">
+                        </div>
+                        <button class="btn btn-primary w-100" onclick="loginUser()">Conectează-te</button>
+                        <p class="text-center mt-3 mb-0">
+                            Nu ai cont? <a href="#" onclick="toggleAuthForm(); return false;">Înregistrează-te</a>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="tasks-section" class="d-none">
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Adaugă o sarcină</h5>
+                <div class="mb-3">
+                    <input type="text" id="new-task-title" class="form-control" placeholder="Titlu">
+                </div>
+                <div class="mb-3">
+                    <textarea id="new-task-description" class="form-control" placeholder="Descriere (opțional)" rows="2"></textarea>
+                </div>
+                <button class="btn btn-success" onclick="addTask()">Adaugă</button>
+            </div>
+        </div>
+
+        <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" id="only-incomplete" onchange="loadTasks()">
+            <label class="form-check-label" for="only-incomplete">
+                Afișează doar sarcinile nefinalizate
+            </label>
+        </div>
+
+        <div class="mb-3">
+            <input type="text" id="search-title" class="form-control" placeholder="Caută după titlu (local)"
+                   oninput="applyClientSearch()">
+        </div>
+
+        <h5>Sarcinile mele</h5>
+        <div id="task-list"></div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const API = "";
+    let lastTasks = [];
+    let editingTaskId = null;
+
+    function saveToken(token) {
+        localStorage.setItem("token", token);
+    }
+
+    function getToken() {
+        return localStorage.getItem("token");
+    }
+
+    function logout() {
+        localStorage.removeItem("token");
+        lastTasks = [];
+        editingTaskId = null;
+        updateUI();
+    }
+
+    function updateUI() {
+        const token = getToken();
+        if (token) {
+            document.getElementById("auth-section").classList.add("d-none");
+            document.getElementById("tasks-section").classList.remove("d-none");
+            document.getElementById("user-info").classList.remove("d-none");
+            document.getElementById("user-info").classList.add("d-flex");
+            document.getElementById("task-counter").classList.remove("d-none");
+            try {
+                const payload = JSON.parse(atob(token.split(".")[1]));
+                document.getElementById("user-email").textContent = payload.sub;
+            } catch (e) {
+                document.getElementById("user-email").textContent = "";
+            }
+            loadTasks();
+        } else {
+            document.getElementById("auth-section").classList.remove("d-none");
+            document.getElementById("tasks-section").classList.add("d-none");
+            document.getElementById("user-info").classList.add("d-none");
+            document.getElementById("user-info").classList.remove("d-flex");
+            document.getElementById("task-counter").classList.add("d-none");
+        }
+    }
+
+    function toggleAuthForm() {
+        document.getElementById("register-form").classList.toggle("d-none");
+        document.getElementById("login-form").classList.toggle("d-none");
+    }
+
+    function showError(elementId, message) {
+        const el = document.getElementById(elementId);
+        el.textContent = typeof message === "string" ? message : JSON.stringify(message);
+        el.classList.remove("d-none");
+    }
+
+    function showSuccess(elementId, message) {
+        const el = document.getElementById(elementId);
+        el.textContent = message;
+        el.classList.remove("d-none");
+    }
+
+    function hideAlert(elementId) {
+        document.getElementById(elementId).classList.add("d-none");
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement("div");
+        div.textContent = String(text);
+        return div.innerHTML;
+    }
+
+    async function registerUser() {
+        hideAlert("register-error");
+        hideAlert("register-success");
+        const email = document.getElementById("register-email").value.trim();
+        const parola = document.getElementById("register-password").value;
+        try {
+            const response = await fetch(`${API}/inregistrare`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, parola })
+            });
+            if (!response.ok) {
+                const err = await response.json();
+                const detail = err.detail;
+                const msg = Array.isArray(detail)
+                    ? detail.map((d) => d.msg).join("; ")
+                    : (detail || "Eroare la înregistrare.");
+                showError("register-error", msg);
+                return;
+            }
+            showSuccess("register-success", "Cont creat! Te poți autentifica.");
+            setTimeout(toggleAuthForm, 1500);
+        } catch {
+            showError("register-error", "Nu se poate contacta serverul. Pornește uvicorn pe port 8000.");
+        }
+    }
+
+    async function loginUser() {
+        hideAlert("login-error");
+        const email = document.getElementById("login-email").value.trim();
+        const parola = document.getElementById("login-password").value;
+        const formData = new URLSearchParams();
+        formData.append("username", email);
+        formData.append("password", parola);
+        try {
+            const response = await fetch(`${API}/autentificare`, {
+                method: "POST",
+                body: formData
+            });
+            if (!response.ok) {
+                showError("login-error", "Email sau parolă incorecte.");
+                return;
+            }
+            const data = await response.json();
+            saveToken(data.access_token);
+            updateUI();
+        } catch {
+            showError("login-error", "Nu se poate contacta serverul.");
+        }
+    }
+
+    async function loadTasks() {
+        const token = getToken();
+        const onlyIncomplete = document.getElementById("only-incomplete").checked;
+        const url = onlyIncomplete
+            ? `${API}/sarcini?doar_nefinalizate=true`
+            : `${API}/sarcini`;
+        try {
+            const response = await fetch(url, {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            if (response.status === 401) {
+                logout();
+                return;
+            }
+            if (!response.ok) return;
+            lastTasks = await response.json();
+            applyClientSearch();
+        } catch {
+            document.getElementById("task-list").innerHTML =
+                `<div class="alert alert-warning">Nu se poate contacta serverul.</div>`;
+        }
+    }
+
+    function updateTaskCounter(tasks) {
+        const total = tasks.length;
+        const done = tasks.filter((t) => t.finalizata).length;
+        document.getElementById("task-counter").textContent =
+            `${total} sarcini / ${done} finalizate`;
+    }
+
+    function applyClientSearch() {
+        const query = document.getElementById("search-title").value.trim().toLowerCase();
+        let visible = lastTasks;
+        if (query) {
+            visible = lastTasks.filter((t) =>
+                (t.titlu || "").toLowerCase().includes(query)
+            );
+        }
+        renderTasks(visible);
+        updateTaskCounter(lastTasks);
+    }
+
+    function renderTasks(tasks) {
+        const container = document.getElementById("task-list");
+        if (tasks.length === 0) {
+            container.innerHTML = `<p class="text-muted">Nicio sarcină de afișat.</p>`;
+            return;
+        }
+        container.innerHTML = tasks.map((task) => {
+            if (editingTaskId === task.id) {
+                return `
+                <div class="card mb-2" id="task-card-${task.id}">
+                    <div class="card-body">
+                        <input type="text" id="edit-title-${task.id}" class="form-control mb-2"
+                               value="${escapeHtml(task.titlu)}">
+                        <textarea id="edit-desc-${task.id}" class="form-control mb-2" rows="2">${escapeHtml(task.descriere || "")}</textarea>
+                        <button class="btn btn-sm btn-primary" onclick="saveTaskEdit(${task.id})">Salvează</button>
+                        <button class="btn btn-sm btn-secondary" onclick="cancelTaskEdit()">Anulează</button>
+                    </div>
+                </div>`;
+            }
+            return `
+            <div class="card mb-2" id="task-card-${task.id}">
+                <div class="card-body d-flex justify-content-between align-items-start">
+                    <div>
+                        <h6 class="mb-1">
+                            ${escapeHtml(task.titlu)}
+                            <span class="badge ${task.finalizata ? "bg-success" : "bg-secondary"} ms-2">
+                                ${task.finalizata ? "Finalizată" : "În progres"}
+                            </span>
+                        </h6>
+                        <p class="text-muted small mb-0">${escapeHtml(task.descriere || "")}</p>
+                    </div>
+                    <div class="d-flex gap-2 ms-3 flex-shrink-0">
+                        <button class="btn btn-sm btn-outline-primary"
+                            onclick="startTaskEdit(${task.id})">Editează</button>
+                        <button class="btn btn-sm btn-outline-success"
+                            onclick="completeTask(${task.id})" ${task.finalizata ? "disabled" : ""}>
+                            Finalizează
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger"
+                            onclick="deleteTask(${task.id})">Șterge</button>
+                    </div>
+                </div>
+            </div>`;
+        }).join("");
+    }
+
+    async function addTask() {
+        const title = document.getElementById("new-task-title").value.trim();
+        if (!title) return;
+        const token = getToken();
+        try {
+            const response = await fetch(`${API}/sarcini`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    titlu: title,
+                    descriere: document.getElementById("new-task-description").value.trim() || null
+                })
+            });
+            if (response.ok) {
+                document.getElementById("new-task-title").value = "";
+                document.getElementById("new-task-description").value = "";
+                loadTasks();
+            }
+        } catch {
+            alert("Nu se poate contacta serverul.");
+        }
+    }
+
+    function startTaskEdit(taskId) {
+        editingTaskId = taskId;
+        applyClientSearch();
+    }
+
+    function cancelTaskEdit() {
+        editingTaskId = null;
+        applyClientSearch();
+    }
+
+    async function saveTaskEdit(taskId) {
+        const title = document.getElementById(`edit-title-${taskId}`).value.trim();
+        const description = document.getElementById(`edit-desc-${taskId}`).value.trim();
+        if (!title) return;
+        const token = getToken();
+        try {
+            const response = await fetch(`${API}/sarcini/${taskId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({ titlu: title, descriere: description || null })
+            });
+            if (response.ok) {
+                editingTaskId = null;
+                loadTasks();
+            }
+        } catch {
+            alert("Eroare la salvare.");
+        }
+    }
+
+    async function completeTask(taskId) {
+        const token = getToken();
+        try {
+            const response = await fetch(`${API}/sarcini/${taskId}/finalizeaza`, {
+                method: "PATCH",
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            if (response.ok) loadTasks();
+        } catch {
+            alert("Nu se poate contacta serverul.");
+        }
+    }
+
+    async function deleteTask(taskId) {
+        if (!window.confirm("Ești sigur că vrei să ștergi această sarcină?")) return;
+        const token = getToken();
+        try {
+            const response = await fetch(`${API}/sarcini/${taskId}`, {
+                method: "DELETE",
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            if (response.ok) loadTasks();
+        } catch {
+            alert("Nu se poate contacta serverul.");
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", updateUI);
+</script>
+</body>
+</html>
