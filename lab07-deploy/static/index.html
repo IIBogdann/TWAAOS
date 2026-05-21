@@ -20,15 +20,8 @@
                 aria-controls="mainNav" aria-expanded="false" aria-label="Meniu">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="mainNav">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" href="/">
-                        <i class="bi bi-list-task"></i> Sarcini
-                    </a>
-                </li>
-            </ul>
-            <div class="d-flex align-items-center flex-wrap gap-2 ms-lg-2">
+        <div class="collapse navbar-collapse justify-content-end" id="mainNav">
+            <div class="d-flex align-items-center flex-wrap gap-2">
                 <span id="task-counter" class="stats-pill text-white d-none"></span>
                 <div id="user-info" class="d-none align-items-center gap-2">
                     <span class="user-chip text-white">
@@ -50,7 +43,6 @@
     <div id="auth-section" class="auth-page">
         <div class="auth-shell row g-0 w-100">
             <div class="col-lg-5 auth-aside">
-                <span class="badge badge-lab mb-3"><i class="bi bi-mortarboard"></i> TWAAOS · Lab 7</span>
                 <h2>Organizează-ți sarcinile</h2>
                 <p class="opacity-90 mb-0">Cont personal, sarcini securizate cu JWT și interfață modernă.</p>
                 <ul class="feature-list">
@@ -193,9 +185,14 @@
 </div>
 </main>
 
-<footer id="app-footer" class="app-footer text-center text-muted py-3 border-top d-none">
-    <div class="container">
-        <i class="bi bi-code-slash"></i> TWAAOS · Laborator #07
+<footer id="app-footer" class="app-footer border-top d-none">
+    <div class="container app-footer-inner">
+        <span class="footer-copy">
+            <i class="bi bi-check2-square text-primary"></i> Gestionar de sarcini
+        </span>
+        <a href="/about.html" class="btn-footer-about">
+            <i class="bi bi-person-badge"></i> Despre mine
+        </a>
     </div>
 </footer>
 

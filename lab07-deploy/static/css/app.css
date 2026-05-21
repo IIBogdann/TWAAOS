@@ -351,6 +351,11 @@ main.app-main {
     box-shadow: var(--app-shadow-lg);
 }
 
+.about-hero h1 {
+    font-size: 2rem;
+    letter-spacing: -0.03em;
+}
+
 .about-avatar {
     width: 110px;
     height: 110px;
@@ -362,14 +367,6 @@ main.app-main {
     justify-content: center;
     font-size: 2.25rem;
     font-weight: 700;
-}
-
-.badge-lab {
-    background: rgba(255, 255, 255, 0.2);
-    color: #fff;
-    font-weight: 600;
-    padding: 0.4rem 0.85rem;
-    border-radius: 2rem;
 }
 
 .tech-chip {
@@ -399,20 +396,49 @@ main.app-main {
 }
 
 .app-footer {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(8px);
-    font-size: 0.875rem;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
     border-top: 1px solid rgba(148, 163, 184, 0.2) !important;
 }
 
-.app-footer a {
-    color: var(--app-primary);
-    font-weight: 500;
-    text-decoration: none;
+.app-footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 0;
 }
 
-.app-footer a:hover {
-    text-decoration: underline;
+.footer-copy {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--app-muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.btn-footer-about {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(90deg, var(--app-primary) 0%, #6366f1 100%);
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: 2px solid transparent;
+    border-radius: 1rem;
+    padding: 0.55rem 1.2rem;
+    text-decoration: none;
+    box-shadow: 0 4px 16px rgba(79, 70, 229, 0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-footer-about:hover {
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(79, 70, 229, 0.4);
 }
 
 /* About — pagină standalone (fără navbar / footer) */
