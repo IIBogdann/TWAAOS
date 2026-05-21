@@ -2,12 +2,6 @@
 
 Versiune finală a aplicației din Lab 3–5: API FastAPI + interfață web + pagină **Despre mine**.
 
-## Cerințe Lab 7 îndeplinite
-
-- Pagină `static/about.html` — prezentare student + proiect
-- UI consistent (navbar, Bootstrap 5, `static/css/app.css`) pe index și about
-- Funcționalitate completă: înregistrare, login JWT, CRUD sarcini
-
 ## Pornire locală
 
 ```bash

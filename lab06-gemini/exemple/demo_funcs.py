@@ -1,4 +1,4 @@
-"""Funcții simple pentru testarea comenzii /doc:functie din lab06-gemini."""
+"""Funcții pentru testarea comenzii /doc:functie."""
 
 
 def salut_utilizator(nume: str) -> str:

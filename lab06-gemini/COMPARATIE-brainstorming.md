@@ -1,12 +1,11 @@
-# Lab 6 — Comparație skill Claude vs Gemini
+# Lab 6 — Brainstorming (Claude vs Gemini)
 
-Skill sursă: `brainstorming` (Claude Code). Variantă Gemini: `brainstorming-gemini`.
+Am adaptat skill-ul `brainstorming` pentru Gemini CLI (`brainstorming-gemini`).
 
-| Aspect | Claude | Gemini |
-|--------|--------|--------|
+| | Claude | Gemini |
+|---|--------|--------|
 | Invocare | `/brainstorming` | `/brainstorming-gemini` |
-| Întrebări către utilizator | Tool `AskUserQuestion` | Întrebări în conversație |
-| Descriere YAML | scurtă | include când se activează skill-ul |
-| Conținut extra | promoții / pași git worktree | doar fluxul de planificare |
+| Întrebări | tool dedicat în IDE | în conversație |
+| Descriere skill | scurtă | include când se activează automat |
 
-Concluzie: același scop (clarificare → opțiuni → design), adaptat la tool-urile Gemini CLI.
+Același flux: clarificare, variante, design pe secțiuni.

@@ -22,13 +22,6 @@ După corectare: **Manual Deploy** → **Clear build cache & deploy** (dacă apa
 
 Variabilele de mediu (`SECRET_KEY`, `DATABASE_PATH=/tmp/sarcini.db`, etc.) rămân — sunt definite în `render.yaml`.
 
-## Site arată ca Lab 5 (fără „Despre mine”)?
-
-1. Verifică în **Logs** ultimul deploy — build-ul trebuie **succeeded**.
-2. Corectează Build Command (tabelul de mai sus).
-3. Deschide în browser (forțează reîncărcare): `https://<app>.onrender.com/about.html`
-4. Pe pagina principală trebuie navbar cu link **Despre mine** — dacă lipsește, încă rulează un deploy vechi.
-
 ## Git
 
 Din rădăcina monorepo-ului:

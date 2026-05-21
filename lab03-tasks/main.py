@@ -1,3 +1,4 @@
+import os
 import sqlite3
 import jwt
 from contextlib import asynccontextmanager
@@ -10,7 +11,7 @@ import bcrypt
 from pydantic import BaseModel, Field, field_validator
 
 DATABASE = "sarcini.db"
-SECRET_KEY = "cheie-secreta-foarte-lunga-schimbati-obligatoriu-in-productie"
+SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-lab03")
 ALGORITHM = "HS256"
 TOKEN_EXPIRE_MINUTES = 30
 

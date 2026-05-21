@@ -15,7 +15,7 @@ from pydantic import BaseModel, Field, field_validator
 load_dotenv()
 
 DATABASE_PATH = os.environ.get("DATABASE_PATH", "sarcini.db")
-SECRET_KEY = os.environ.get("SECRET_KEY", "cheie-dev-de-inlocuit")
+SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-local")
 ALGORITHM = os.environ.get("ALGORITHM", "HS256")
 EXPIRARE_TOKEN_MINUTE = int(os.environ.get("EXPIRARE_TOKEN_MINUTE", "30"))
 

@@ -54,7 +54,7 @@ gemini --version
 
 1. Copiază șablonul:
    ```bash
-   cd /home/vboxuser/Documents/TWAAOS/lab06-gemini
+   cd ~/Documents/TWAAOS/lab06-gemini
    cp .env.example .env
    ```
 2. Editează `.env` și pune cheia reală (din [Google AI Studio](https://aistudio.google.com/app/apikey)).
@@ -130,7 +130,7 @@ Nu te baza pe `sudo apt install npm` singur — pe Ubuntu 24.04 vine cu Node 18 
 ## Test rapid
 
 ```bash
-cd /home/vboxuser/Documents/TWAAOS/lab06-gemini
+cd ~/Documents/TWAAOS/lab06-gemini
 ./start-gemini.sh check    # Node v20+, npm, gemini, GEMINI_API_KEY
 ./start-gemini.sh test     # headless: gemini -p "hello"
 ./start-gemini.sh          # interactiv
