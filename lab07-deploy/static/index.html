@@ -10,7 +10,7 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark app-navbar">
+<nav id="app-navbar" class="navbar navbar-expand-lg navbar-dark app-navbar d-none">
     <div class="container">
         <a class="navbar-brand" href="/">
             <i class="bi bi-check2-square"></i>
@@ -29,9 +29,6 @@
                 </li>
             </ul>
             <div class="d-flex align-items-center flex-wrap gap-2 ms-lg-2">
-                <a class="btn btn-light btn-sm nav-about-btn text-primary" href="/about.html">
-                    <i class="bi bi-person-circle"></i> Despre mine
-                </a>
                 <span id="task-counter" class="stats-pill text-white d-none"></span>
                 <div id="user-info" class="d-none align-items-center gap-2">
                     <span class="user-chip text-white">
@@ -50,8 +47,8 @@
 <main class="app-main">
 <div class="container py-4 pb-5">
 
-    <div id="auth-section">
-        <div class="auth-shell row g-0">
+    <div id="auth-section" class="auth-page">
+        <div class="auth-shell row g-0 w-100">
             <div class="col-lg-5 auth-aside">
                 <span class="badge badge-lab mb-3"><i class="bi bi-mortarboard"></i> TWAAOS · Lab 7</span>
                 <h2>Organizează-ți sarcinile</h2>
@@ -61,9 +58,11 @@
                     <li><i class="bi bi-pencil-square"></i> Creează și editează sarcini</li>
                     <li><i class="bi bi-funnel"></i> Filtrează și caută rapid</li>
                 </ul>
-                <a href="/about.html" class="btn-about-hero">
-                    <i class="bi bi-person-badge"></i> Cunoaște autorul proiectului
-                </a>
+                <div class="about-cta-wrap">
+                    <a href="/about.html" class="btn-about-hero">
+                        <i class="bi bi-person-badge"></i> Despre mine
+                    </a>
+                </div>
             </div>
             <div class="col-lg-7 auth-form-panel">
                 <ul class="nav nav-pills auth-tabs mb-4" role="tablist">
@@ -194,10 +193,9 @@
 </div>
 </main>
 
-<footer class="app-footer text-center text-muted py-3 border-top">
+<footer id="app-footer" class="app-footer text-center text-muted py-3 border-top d-none">
     <div class="container">
-        <i class="bi bi-code-slash"></i> TWAAOS · Lab 7 ·
-        <a href="/about.html"><i class="bi bi-person-circle"></i> Despre mine</a>
+        <i class="bi bi-code-slash"></i> TWAAOS · Laborator #07
     </div>
 </footer>
 
@@ -228,6 +226,8 @@
     function updateUI() {
         const token = getToken();
         if (token) {
+            document.getElementById("app-navbar").classList.remove("d-none");
+            document.getElementById("app-footer").classList.remove("d-none");
             document.getElementById("auth-section").classList.add("d-none");
             document.getElementById("tasks-section").classList.remove("d-none");
             document.getElementById("user-info").classList.remove("d-none");
@@ -241,6 +241,8 @@
             }
             loadTasks();
         } else {
+            document.getElementById("app-navbar").classList.add("d-none");
+            document.getElementById("app-footer").classList.add("d-none");
             document.getElementById("auth-section").classList.remove("d-none");
             document.getElementById("tasks-section").classList.add("d-none");
             document.getElementById("user-info").classList.add("d-none");
