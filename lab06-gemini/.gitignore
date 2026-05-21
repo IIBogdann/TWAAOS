@@ -1,0 +1,7 @@
+# Chei și secrete locale – nu comite niciodată
+.env
+.env.local
+.env.*.local
+
+# Rapoarte generate de exercițiul 3 (opțional – păstrează-le local)
+rapoarte/

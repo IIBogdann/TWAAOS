@@ -1,0 +1,15 @@
+description = "Generează docstring în stil Google pentru o funcție Python din proiect."
+
+prompt = """
+Sarcina: documentează funcția Python cerată de utilizator.
+
+Numele funcției: $args
+
+Pași:
+1. Caută definiția funcției în fișierele .py din directorul curent (read_file, glob, list_directory).
+2. Citește implementarea completă.
+3. Generează un docstring în stil Google (Args, Returns, Raises dacă e cazul).
+4. Propune textul gata de lipit imediat deasupra funcției.
+
+Răspunde în română, cu docstring-ul în limba folosită în codul sursă (de obicei engleză).
+"""

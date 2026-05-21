@@ -22,6 +22,7 @@
 | `lab03-tasks/` | Lab 3 — API + SQLite + JWT (fără CORS, fără HTML) | ✓ restaurat |
 | `lab04-web-ui/` | Lab 4 — backend + CORS + `index.html` (Live Server) | ✓ finalizat |
 | `lab05-deploy/` | Lab 5 — deploy: `.env`, StaticFiles, `render.yaml` | ✓ separat |
+| `lab07-deploy/` | Lab 7 — final: About + UI consistent + deploy Render | ✓ curent |
 
 ## IDE
 - **Cursor** — remote SSH (agent).
@@ -67,12 +68,13 @@
 │   ├── main.py
 │   ├── index.html
 │   └── venv/
-└── lab05-deploy/       ← Lab 5 (un singur server, deploy)
+├── lab05-deploy/       ← Lab 5 (arhivă, nemodificat)
+└── lab07-deploy/       ← Lab 7 final (deploy activ pe Render)
     ├── main.py
     ├── static/index.html
+    ├── static/about.html
+    ├── static/css/app.css
     ├── render.yaml
-    ├── .env.example
-    ├── Dockerfile
     └── venv/
 ```
 
@@ -127,6 +129,19 @@ uvicorn main:app --reload
 # http://127.0.0.1:8000 — UI + API același origin
 ```
 
+## Lab #07 — final + deploy ✓
+
+- **Folder:** `lab07-deploy/` (copie evoluată din Lab 5 + `about.html` + `css/app.css`)
+- **Render:** schimbă Blueprint la `lab07-deploy/render.yaml` (vezi `lab07-deploy/RENDER-DEPLOY.md`)
+- **lab05-deploy:** nemodificat (arhivă)
+
+```bash
+cd ~/Documents/TWAAOS/lab07-deploy
+source venv/bin/activate
+uvicorn main:app --reload
+# http://127.0.0.1:8000/  și  http://127.0.0.1:8000/about.html
+```
+
 ## VM pregătit?
-- **Lab #01–#04:** DA (foldere separate, neatinse)
-- **Lab #05:** DA local — tu faci `git push` + Render + screenshot formular
+- **Lab #01–#06:** DA (foldere separate)
+- **Lab #07:** DA local — `git push` + actualizare Render + formular https://forms.gle/ucZD3FziG52MZVjv8
