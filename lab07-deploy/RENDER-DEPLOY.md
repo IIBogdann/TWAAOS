@@ -10,11 +10,24 @@ Lab 7 **înlocuiește** deploy-ul Lab 5 pe același serviciu Render — nu e nev
 
 Sau, dacă configurezi manual serviciul (fără Blueprint sync):
 
-| Câmp | Valoare |
-|------|---------|
-| **Root Directory** | `lab07-deploy` |
+| Câmp | Valoare corectă | Greșit (nu folosi) |
+|------|-----------------|---------------------|
+| **Root Directory** | `lab07-deploy` | — |
+| **Build Command** | `pip install -r requirements.txt` | `lab07-deploy/ $ pip install...` |
+| **Start Command** | `uvicorn main:app --host 0.0.0.0 --port $PORT` | — |
+
+**Important:** Cu Root Directory = `lab07-deploy`, Render rulează deja comenzile **în interiorul** acelui folder. Build Command trebuie să fie **doar** `pip install -r requirements.txt` — fără prefix `lab07-deploy/`, fără `$`, fără prompt de terminal.
+
+După corectare: **Manual Deploy** → **Clear build cache & deploy** (dacă apare opțiunea).
 
 Variabilele de mediu (`SECRET_KEY`, `DATABASE_PATH=/tmp/sarcini.db`, etc.) rămân — sunt definite în `render.yaml`.
+
+## Site arată ca Lab 5 (fără „Despre mine”)?
+
+1. Verifică în **Logs** ultimul deploy — build-ul trebuie **succeeded**.
+2. Corectează Build Command (tabelul de mai sus).
+3. Deschide în browser (forțează reîncărcare): `https://<app>.onrender.com/about.html`
+4. Pe pagina principală trebuie navbar cu link **Despre mine** — dacă lipsește, încă rulează un deploy vechi.
 
 ## Git
 

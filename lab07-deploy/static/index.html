@@ -5,13 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sarcini — Gestionar de sarcini</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="/css/app.css" rel="stylesheet">
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+<nav class="navbar navbar-expand-lg navbar-dark app-navbar">
     <div class="container">
-        <a class="navbar-brand fw-bold" href="/">Gestionar de sarcini</a>
+        <a class="navbar-brand" href="/">
+            <i class="bi bi-check2-square"></i>
+            Gestionar de sarcini
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
                 aria-controls="mainNav" aria-expanded="false" aria-label="Meniu">
             <span class="navbar-toggler-icon"></span>
@@ -19,17 +23,24 @@
         <div class="collapse navbar-collapse" id="mainNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" href="/">Sarcini</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/about.html">Despre mine</a>
+                    <a class="nav-link active" href="/">
+                        <i class="bi bi-list-task"></i> Sarcini
+                    </a>
                 </li>
             </ul>
-            <div class="d-flex align-items-center gap-3 ms-lg-3">
-                <span id="task-counter" class="text-white small d-none"></span>
-                <div id="user-info" class="d-none align-items-center gap-3">
-                    <span id="user-email" class="text-white small"></span>
-                    <button class="btn btn-outline-light btn-sm" onclick="logout()">Deconectare</button>
+            <div class="d-flex align-items-center flex-wrap gap-2 ms-lg-2">
+                <a class="btn btn-light btn-sm nav-about-btn text-primary" href="/about.html">
+                    <i class="bi bi-person-circle"></i> Despre mine
+                </a>
+                <span id="task-counter" class="stats-pill text-white d-none"></span>
+                <div id="user-info" class="d-none align-items-center gap-2">
+                    <span class="user-chip text-white">
+                        <i class="bi bi-person-fill"></i>
+                        <span id="user-email"></span>
+                    </span>
+                    <button class="btn btn-outline-light btn-sm rounded-pill" onclick="logout()">
+                        <i class="bi bi-box-arrow-right"></i> Ieșire
+                    </button>
                 </div>
             </div>
         </div>
@@ -37,92 +48,156 @@
 </nav>
 
 <main class="app-main">
-<div class="container mt-4 mb-4">
+<div class="container py-4 pb-5">
 
     <div id="auth-section">
-        <div class="row justify-content-center">
-            <div class="col-md-5">
+        <div class="auth-shell row g-0">
+            <div class="col-lg-5 auth-aside">
+                <span class="badge badge-lab mb-3"><i class="bi bi-mortarboard"></i> TWAAOS · Lab 7</span>
+                <h2>Organizează-ți sarcinile</h2>
+                <p class="opacity-90 mb-0">Cont personal, sarcini securizate cu JWT și interfață modernă.</p>
+                <ul class="feature-list">
+                    <li><i class="bi bi-shield-lock"></i> Autentificare sigură</li>
+                    <li><i class="bi bi-pencil-square"></i> Creează și editează sarcini</li>
+                    <li><i class="bi bi-funnel"></i> Filtrează și caută rapid</li>
+                </ul>
+                <a href="/about.html" class="btn-about-hero">
+                    <i class="bi bi-person-badge"></i> Cunoaște autorul proiectului
+                </a>
+            </div>
+            <div class="col-lg-7 auth-form-panel">
+                <ul class="nav nav-pills auth-tabs mb-4" role="tablist">
+                    <li class="nav-item flex-fill">
+                        <button class="nav-link active w-100" id="tab-register" type="button"
+                                onclick="showAuthTab('register')">
+                            <i class="bi bi-person-plus"></i> Înregistrare
+                        </button>
+                    </li>
+                    <li class="nav-item flex-fill">
+                        <button class="nav-link w-100" id="tab-login" type="button"
+                                onclick="showAuthTab('login')">
+                            <i class="bi bi-box-arrow-in-right"></i> Autentificare
+                        </button>
+                    </li>
+                </ul>
 
-                <div id="register-form" class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Înregistrare</h5>
-                        <div id="register-error" class="alert alert-danger d-none"></div>
-                        <div id="register-success" class="alert alert-success d-none"></div>
-                        <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email" id="register-email" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Parolă (min. 8 caractere)</label>
-                            <input type="password" id="register-password" class="form-control">
-                        </div>
-                        <button class="btn btn-primary w-100" onclick="registerUser()">Înregistrează-te</button>
-                        <p class="text-center mt-3 mb-0">
-                            Ai deja cont? <a href="#" onclick="toggleAuthForm(); return false;">Autentifică-te</a>
-                        </p>
+                <div id="register-form">
+                    <div id="register-error" class="alert alert-danger d-none d-flex align-items-center gap-2">
+                        <i class="bi bi-exclamation-triangle-fill"></i><span></span>
                     </div>
+                    <div id="register-success" class="alert alert-success d-none d-flex align-items-center gap-2">
+                        <i class="bi bi-check-circle-fill"></i><span></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold" for="register-email">Email</label>
+                        <div class="input-icon-wrap">
+                            <i class="bi bi-envelope"></i>
+                            <input type="email" id="register-email" class="form-control" placeholder="nume@exemplu.ro">
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold" for="register-password">Parolă</label>
+                        <div class="input-icon-wrap">
+                            <i class="bi bi-key"></i>
+                            <input type="password" id="register-password" class="form-control"
+                                   placeholder="Minim 8 caractere">
+                        </div>
+                    </div>
+                    <button class="btn btn-app-primary w-100" onclick="registerUser()">
+                        <i class="bi bi-person-check me-1"></i> Creează cont
+                    </button>
                 </div>
 
-                <div id="login-form" class="card d-none">
-                    <div class="card-body">
-                        <h5 class="card-title">Autentificare</h5>
-                        <div id="login-error" class="alert alert-danger d-none"></div>
-                        <div class="mb-3">
-                            <label class="form-label">Email</label>
-                            <input type="email" id="login-email" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Parolă</label>
-                            <input type="password" id="login-password" class="form-control">
-                        </div>
-                        <button class="btn btn-primary w-100" onclick="loginUser()">Conectează-te</button>
-                        <p class="text-center mt-3 mb-0">
-                            Nu ai cont? <a href="#" onclick="toggleAuthForm(); return false;">Înregistrează-te</a>
-                        </p>
+                <div id="login-form" class="d-none">
+                    <div id="login-error" class="alert alert-danger d-none d-flex align-items-center gap-2">
+                        <i class="bi bi-exclamation-triangle-fill"></i><span></span>
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold" for="login-email">Email</label>
+                        <div class="input-icon-wrap">
+                            <i class="bi bi-envelope"></i>
+                            <input type="email" id="login-email" class="form-control" placeholder="nume@exemplu.ro">
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold" for="login-password">Parolă</label>
+                        <div class="input-icon-wrap">
+                            <i class="bi bi-key"></i>
+                            <input type="password" id="login-password" class="form-control" placeholder="Parola ta">
+                        </div>
+                    </div>
+                    <button class="btn btn-app-primary w-100" onclick="loginUser()">
+                        <i class="bi bi-box-arrow-in-right me-1"></i> Conectează-te
+                    </button>
                 </div>
-
             </div>
         </div>
     </div>
 
     <div id="tasks-section" class="d-none">
+        <div class="page-header">
+            <h1><i class="bi bi-kanban text-primary"></i> Panoul meu</h1>
+            <p class="text-muted mb-0">Gestionează sarcinile tale într-un singur loc.</p>
+        </div>
 
-        <div class="card mb-4">
-            <div class="card-body">
-                <h5 class="card-title">Adaugă o sarcină</h5>
-                <div class="mb-3">
-                    <input type="text" id="new-task-title" class="form-control" placeholder="Titlu">
+        <div class="app-card mb-4">
+            <div class="app-card-header">
+                <i class="bi bi-plus-circle"></i> Sarcină nouă
+            </div>
+            <div class="card-body pt-0">
+                <div class="row g-3">
+                    <div class="col-md-5">
+                        <div class="input-icon-wrap">
+                            <i class="bi bi-card-text"></i>
+                            <input type="text" id="new-task-title" class="form-control" placeholder="Titlu sarcină">
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="input-icon-wrap">
+                            <i class="bi bi-text-paragraph"></i>
+                            <textarea id="new-task-description" class="form-control" rows="1"
+                                      placeholder="Descriere (opțional)"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-2 d-grid">
+                        <button class="btn btn-app-success" onclick="addTask()">
+                            <i class="bi bi-plus-lg"></i> Adaugă
+                        </button>
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <textarea id="new-task-description" class="form-control" placeholder="Descriere (opțional)" rows="2"></textarea>
-                </div>
-                <button class="btn btn-success" onclick="addTask()">Adaugă</button>
             </div>
         </div>
 
-        <div class="form-check mb-2">
-            <input class="form-check-input" type="checkbox" id="only-incomplete" onchange="loadTasks()">
-            <label class="form-check-label" for="only-incomplete">
-                Afișează doar sarcinile nefinalizate
-            </label>
+        <div class="filters-bar">
+            <div class="row g-3 align-items-center">
+                <div class="col-md-6">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="only-incomplete" onchange="loadTasks()">
+                        <label class="form-check-label" for="only-incomplete">
+                            <i class="bi bi-filter text-primary"></i> Doar nefinalizate
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-icon-wrap">
+                        <i class="bi bi-search"></i>
+                        <input type="text" id="search-title" class="form-control" placeholder="Caută după titlu..."
+                               oninput="applyClientSearch()">
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="mb-3">
-            <input type="text" id="search-title" class="form-control" placeholder="Caută după titlu (local)"
-                   oninput="applyClientSearch()">
-        </div>
-
-        <h5>Sarcinile mele</h5>
+        <h2 class="h5 fw-bold mb-3"><i class="bi bi-list-ul text-primary"></i> Sarcinile mele</h2>
         <div id="task-list"></div>
-
     </div>
 </div>
 </main>
 
 <footer class="app-footer text-center text-muted py-3 border-top">
     <div class="container">
-        TWAAOS · Laborator #07 · <a href="/about.html">Despre mine</a>
+        <i class="bi bi-code-slash"></i> TWAAOS · Lab 7 ·
+        <a href="/about.html"><i class="bi bi-person-circle"></i> Despre mine</a>
     </div>
 </footer>
 
@@ -132,19 +207,22 @@
     let lastTasks = [];
     let editingTaskId = null;
 
-    function saveToken(token) {
-        localStorage.setItem("token", token);
-    }
-
-    function getToken() {
-        return localStorage.getItem("token");
-    }
+    function saveToken(token) { localStorage.setItem("token", token); }
+    function getToken() { return localStorage.getItem("token"); }
 
     function logout() {
         localStorage.removeItem("token");
         lastTasks = [];
         editingTaskId = null;
         updateUI();
+    }
+
+    function showAuthTab(tab) {
+        const isRegister = tab === "register";
+        document.getElementById("register-form").classList.toggle("d-none", !isRegister);
+        document.getElementById("login-form").classList.toggle("d-none", isRegister);
+        document.getElementById("tab-register").classList.toggle("active", isRegister);
+        document.getElementById("tab-login").classList.toggle("active", !isRegister);
     }
 
     function updateUI() {
@@ -171,20 +249,19 @@
         }
     }
 
-    function toggleAuthForm() {
-        document.getElementById("register-form").classList.toggle("d-none");
-        document.getElementById("login-form").classList.toggle("d-none");
-    }
-
     function showError(elementId, message) {
         const el = document.getElementById(elementId);
-        el.textContent = typeof message === "string" ? message : JSON.stringify(message);
+        const text = typeof message === "string" ? message : JSON.stringify(message);
+        const span = el.querySelector("span") || el;
+        (el.querySelector("span") ? span : el).textContent = text;
         el.classList.remove("d-none");
     }
 
     function showSuccess(elementId, message) {
         const el = document.getElementById(elementId);
-        el.textContent = message;
+        const span = el.querySelector("span");
+        if (span) span.textContent = message;
+        else el.textContent = message;
         el.classList.remove("d-none");
     }
 
@@ -219,9 +296,9 @@
                 return;
             }
             showSuccess("register-success", "Cont creat! Te poți autentifica.");
-            setTimeout(toggleAuthForm, 1500);
+            setTimeout(() => showAuthTab("login"), 1500);
         } catch {
-            showError("register-error", "Nu se poate contacta serverul. Pornește uvicorn pe port 8000.");
+            showError("register-error", "Nu se poate contacta serverul.");
         }
     }
 
@@ -259,24 +336,22 @@
             const response = await fetch(url, {
                 headers: { "Authorization": `Bearer ${token}` }
             });
-            if (response.status === 401) {
-                logout();
-                return;
-            }
+            if (response.status === 401) { logout(); return; }
             if (!response.ok) return;
             lastTasks = await response.json();
             applyClientSearch();
         } catch {
             document.getElementById("task-list").innerHTML =
-                `<div class="alert alert-warning">Nu se poate contacta serverul.</div>`;
+                `<div class="alert alert-warning d-flex align-items-center gap-2">
+                    <i class="bi bi-wifi-off"></i> Nu se poate contacta serverul.</div>`;
         }
     }
 
     function updateTaskCounter(tasks) {
         const total = tasks.length;
         const done = tasks.filter((t) => t.finalizata).length;
-        document.getElementById("task-counter").textContent =
-            `${total} sarcini / ${done} finalizate`;
+        const el = document.getElementById("task-counter");
+        el.innerHTML = `<i class="bi bi-bar-chart"></i> ${total} sarcini · ${done} finalizate`;
     }
 
     function applyClientSearch() {
@@ -294,43 +369,54 @@
     function renderTasks(tasks) {
         const container = document.getElementById("task-list");
         if (tasks.length === 0) {
-            container.innerHTML = `<p class="text-muted">Nicio sarcină de afișat.</p>`;
+            container.innerHTML = `
+                <div class="empty-state app-card">
+                    <i class="bi bi-inbox"></i>
+                    <p class="mb-0 fw-semibold">Nicio sarcină de afișat</p>
+                    <p class="small">Adaugă prima ta sarcină folosind formularul de mai sus.</p>
+                </div>`;
             return;
         }
         container.innerHTML = tasks.map((task) => {
             if (editingTaskId === task.id) {
                 return `
-                <div class="card mb-2" id="task-card-${task.id}">
-                    <div class="card-body">
-                        <input type="text" id="edit-title-${task.id}" class="form-control mb-2"
+                <div class="task-item p-3" id="task-card-${task.id}">
+                    <div class="input-icon-wrap mb-2">
+                        <i class="bi bi-card-text"></i>
+                        <input type="text" id="edit-title-${task.id}" class="form-control"
                                value="${escapeHtml(task.titlu)}">
-                        <textarea id="edit-desc-${task.id}" class="form-control mb-2" rows="2">${escapeHtml(task.descriere || "")}</textarea>
-                        <button class="btn btn-sm btn-primary" onclick="saveTaskEdit(${task.id})">Salvează</button>
-                        <button class="btn btn-sm btn-secondary" onclick="cancelTaskEdit()">Anulează</button>
                     </div>
+                    <textarea id="edit-desc-${task.id}" class="form-control mb-2" rows="2">${escapeHtml(task.descriere || "")}</textarea>
+                    <button class="btn btn-sm btn-app-primary me-1" onclick="saveTaskEdit(${task.id})">
+                        <i class="bi bi-check-lg"></i> Salvează
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary" onclick="cancelTaskEdit()">
+                        <i class="bi bi-x-lg"></i> Anulează
+                    </button>
                 </div>`;
             }
+            const done = task.finalizata;
             return `
-            <div class="card mb-2" id="task-card-${task.id}">
-                <div class="card-body d-flex justify-content-between align-items-start">
-                    <div>
-                        <h6 class="mb-1">
+            <div class="task-item ${done ? "task-done" : ""} p-3" id="task-card-${task.id}">
+                <div class="d-flex justify-content-between align-items-start gap-3">
+                    <div class="flex-grow-1">
+                        <h6 class="mb-1 fw-bold">
+                            <i class="bi ${done ? "bi-check-circle-fill text-success" : "bi-circle text-primary"}"></i>
                             ${escapeHtml(task.titlu)}
-                            <span class="badge ${task.finalizata ? "bg-success" : "bg-secondary"} ms-2">
-                                ${task.finalizata ? "Finalizată" : "În progres"}
-                            </span>
                         </h6>
-                        <p class="text-muted small mb-0">${escapeHtml(task.descriere || "")}</p>
+                        <span class="badge ${done ? "bg-success" : "bg-primary"} bg-opacity-75">
+                            ${done ? "Finalizată" : "În progres"}
+                        </span>
+                        ${task.descriere ? `<p class="text-muted small mt-2 mb-0">${escapeHtml(task.descriere)}</p>` : ""}
                     </div>
-                    <div class="d-flex gap-2 ms-3 flex-shrink-0">
-                        <button class="btn btn-sm btn-outline-primary"
-                            onclick="startTaskEdit(${task.id})">Editează</button>
-                        <button class="btn btn-sm btn-outline-success"
-                            onclick="completeTask(${task.id})" ${task.finalizata ? "disabled" : ""}>
-                            Finalizează
-                        </button>
-                        <button class="btn btn-sm btn-outline-danger"
-                            onclick="deleteTask(${task.id})">Șterge</button>
+                    <div class="task-actions d-flex gap-1 flex-shrink-0">
+                        <button class="btn btn-sm btn-outline-primary" title="Editează"
+                            onclick="startTaskEdit(${task.id})"><i class="bi bi-pencil"></i></button>
+                        <button class="btn btn-sm btn-outline-success" title="Finalizează"
+                            onclick="completeTask(${task.id})" ${done ? "disabled" : ""}>
+                            <i class="bi bi-check2"></i></button>
+                        <button class="btn btn-sm btn-outline-danger" title="Șterge"
+                            onclick="deleteTask(${task.id})"><i class="bi bi-trash"></i></button>
                     </div>
                 </div>
             </div>`;
@@ -363,15 +449,8 @@
         }
     }
 
-    function startTaskEdit(taskId) {
-        editingTaskId = taskId;
-        applyClientSearch();
-    }
-
-    function cancelTaskEdit() {
-        editingTaskId = null;
-        applyClientSearch();
-    }
+    function startTaskEdit(taskId) { editingTaskId = taskId; applyClientSearch(); }
+    function cancelTaskEdit() { editingTaskId = null; applyClientSearch(); }
 
     async function saveTaskEdit(taskId) {
         const title = document.getElementById(`edit-title-${taskId}`).value.trim();
@@ -387,13 +466,8 @@
                 },
                 body: JSON.stringify({ titlu: title, descriere: description || null })
             });
-            if (response.ok) {
-                editingTaskId = null;
-                loadTasks();
-            }
-        } catch {
-            alert("Eroare la salvare.");
-        }
+            if (response.ok) { editingTaskId = null; loadTasks(); }
+        } catch { alert("Eroare la salvare."); }
     }
 
     async function completeTask(taskId) {
@@ -404,13 +478,11 @@
                 headers: { "Authorization": `Bearer ${token}` }
             });
             if (response.ok) loadTasks();
-        } catch {
-            alert("Nu se poate contacta serverul.");
-        }
+        } catch { alert("Nu se poate contacta serverul."); }
     }
 
     async function deleteTask(taskId) {
-        if (!window.confirm("Ești sigur că vrei să ștergi această sarcină?")) return;
+        if (!window.confirm("Ștergi această sarcină?")) return;
         const token = getToken();
         try {
             const response = await fetch(`${API}/sarcini/${taskId}`, {
@@ -418,9 +490,7 @@
                 headers: { "Authorization": `Bearer ${token}` }
             });
             if (response.ok) loadTasks();
-        } catch {
-            alert("Nu se poate contacta serverul.");
-        }
+        } catch { alert("Nu se poate contacta serverul."); }
     }
 
     document.addEventListener("DOMContentLoaded", updateUI);
